@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="BadWAM: World-Action Desynchronization Attacks against World-Action Models"
+    />
+    <meta property="og:title" content="BadWAM" />
+    <meta
+      property="og:description"
+      content="World-action desynchronization attacks against world-action models."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="assets/images/method_overview.png" />
+    <title>BadWAM: World-Action Desynchronization Attacks</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="BadWAM home">
+        <span class="brand-mark"></span>
+        BadWAM
+      </a>
+      <nav class="site-nav" aria-label="Page navigation">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#citation">Citation</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Project page · Preprint</p>
+          <h1>BadWAM: World-Action Desynchronization Attacks against World-Action Models</h1>
+          <p class="authors">
+            Qi Li<sup>1</sup> · Xinchao Wang<sup>1†</sup>
+          </p>
+          <p class="affiliation">
+            <sup>1</sup>National University of Singapore · <sup>†</sup>Corresponding author
+          </p>
+          <p class="tagline">
+            BadWAM shows that a robot can appear to imagine a plausible future while
+            executing actions that have been adversarially shifted toward task failure.
+          </p>
+          <div class="button-row">
+            <a class="button primary" href="assets/paper/BadWAM.pdf">Paper PDF</a>
+            <a class="button" href="https://github.com/LiQiiiii/BadWAM">Code</a>
+            <a class="button ghost" href="#citation">BibTeX</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Key result summary">
+          <div class="mini-chart">
+            <div>
+              <span>Clean</span>
+              <strong>96.5%</strong>
+            </div>
+            <div>
+              <span>Under attack</span>
+              <strong>43.1%</strong>
+            </div>
+          </div>
+          <p>
+            Action-only desynchronization reduces closed-loop LIBERO success on the
+            action-only WAM from <b>96.5%</b> to <b>43.1%</b>.
+          </p>
+        </aside>
+      </section>
+
+      <section class="section teaser">
+        <figure class="image-card hero-image">
+          <img src="assets/images/method_overview.png" alt="BadWAM method overview" />
+          <figcaption>
+            BadWAM injects small visual perturbations and searches online over a frozen
+            WAM to desynchronize the action pathway from the imagination pathway.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="abstract" class="section narrow">
+        <p class="eyebrow">Abstract</p>
+        <h2>Future prediction is not automatically a safety mechanism.</h2>
+        <p>
+          World-action models (WAMs) couple action generation with future world
+          prediction, a design often viewed as a source of robustness, interpretability,
+          and safety. BadWAM challenges this assumption. It models
+          <em>world-action desynchronization attacks</em>: small observation
+          perturbations that break the alignment between what a WAM imagines and what it
+          executes.
+        </p>
+        <p>
+          BadWAM instantiates two complementary objectives. The
+          <strong>action-only desynchronization attack</strong> prioritizes disruption by
+          driving the model toward task-failing actions. The
+          <strong>imagination-preserving desynchronization attack</strong> additionally
+          keeps the predicted future close to the clean imagination, producing a stealthier
+          failure mode. Across WAM variants and closed-loop robot tasks, BadWAM
+          substantially reduces task success and shows that plausible imagined futures
+          alone are not sufficient evidence of safe execution.
+        </p>
+      </section>
+
+      <section id="method" class="section">
+        <div class="section-head">
+          <p class="eyebrow">Method</p>
+          <h2>BadWAM attacks the synchronization between imagining and acting.</h2>
+        </div>
+
+        <div class="method-grid">
+          <article class="method-card red">
+            <span class="step">01</span>
+            <h3>Action-only desynchronization</h3>
+            <p>
+              The attacker maximizes the deviation between clean and attacked action
+              chunks under a bounded visual perturbation. This captures high-strength
+              action hijacking when disruption is the main goal.
+            </p>
+          </article>
+          <article class="method-card orange">
+            <span class="step">02</span>
+            <h3>Imagination-preserving desynchronization</h3>
+            <p>
+              The attacker still shifts the action, but regularizes the predicted future
+              to remain close to the clean imagination. This creates a stealthier
+              WAM-specific failure.
+            </p>
+          </article>
+          <article class="method-card teal">
+            <span class="step">03</span>
+            <h3>Closed-loop execution</h3>
+            <p>
+              Small replan-level shifts accumulate through robot execution, especially on
+              spatial and long-horizon tasks where timing and geometry leave little
+              tolerance for action drift.
+            </p>
+          </article>
+        </div>
+
+        <div class="two-col">
+          <figure class="image-card">
+            <img src="assets/images/desync_evidence_overleaf.png" alt="Action and future statistics" />
+            <figcaption>
+              Failed episodes tend to have larger action shifts, while predicted-future
+              shifts can overlap with successful episodes.
+            </figcaption>
+          </figure>
+          <figure class="image-card">
+            <img src="assets/images/action_structure.png" alt="Action component analysis" />
+            <figcaption>
+              The induced shifts concentrate on meaningful action channels and horizon
+              segments rather than behaving like unstructured noise.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="results" class="section">
+        <div class="section-head">
+          <p class="eyebrow">Main results</p>
+          <h2>BadWAM reliably degrades closed-loop task success.</h2>
+        </div>
+
+        <div class="result-grid">
+          <article class="result-card green">
+            <span>Action-only WAM</span>
+            <strong>96.5 → 43.1</strong>
+            <p>LIBERO success under action-only desynchronization.</p>
+          </article>
+          <article class="result-card purple">
+            <span>Joint WAM</span>
+            <strong>96.7 → 61.5</strong>
+            <p>LIBERO success under action-only desynchronization.</p>
+          </article>
+          <article class="result-card orange">
+            <span>IDM WAM</span>
+            <strong>100.0 → 66.1</strong>
+            <p>LIBERO success under action-only desynchronization.</p>
+          </article>
+          <article class="result-card red">
+            <span>RoboTwin</span>
+            <strong>92.1 → 84.4</strong>
+            <p>Action-only WAM success under the same attack protocol.</p>
+          </article>
+        </div>
+
+        <div class="two-col">
+          <figure class="image-card">
+            <img src="assets/images/main_results.png" alt="Task-level failure profile" />
+            <figcaption>
+              Task-level failure profile: attacked tasks move into lower success bins.
+            </figcaption>
+          </figure>
+          <figure class="image-card">
+            <img src="assets/images/suite_heatmap.png" alt="Per-suite success heatmap" />
+            <figcaption>
+              Spatial and long-horizon suites are especially vulnerable to accumulated
+              action errors.
+            </figcaption>
+          </figure>
+        </div>
+
+        <figure class="image-card wide">
+          <img src="assets/images/success_by_suite.png" alt="Success over repeated trials by suite" />
+          <figcaption>
+            The success gap persists as more trials are averaged, showing that BadWAM is
+            not merely exploiting a few unlucky seeds.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="analysis" class="section">
+        <div class="section-head">
+          <p class="eyebrow">Analysis</p>
+          <h2>Attack strength and stealthiness form a measurable trade-off.</h2>
+        </div>
+
+        <figure class="image-card wide">
+          <img
+            src="assets/images/matched_stealth.png"
+            alt="Matched-strength stealth dynamics"
+          />
+          <figcaption>
+            Under matched perturbation and query budgets, the imagination-preserving
+            objective maintains comparable attack strength while reducing predicted-future
+            drift.
+          </figcaption>
+        </figure>
+
+        <figure class="image-card wide">
+          <img src="assets/images/efficiency.png" alt="Efficiency and perturbation budget" />
+          <figcaption>
+            Query budget and perturbation budget shape the strength-runtime frontier.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section id="qualitative" class="section">
+        <div class="section-head">
+          <p class="eyebrow">Qualitative cases</p>
+          <h2>BadWAM failures are structured and visually interpretable.</h2>
+        </div>
+
+        <figure class="image-card wide">
+          <img src="assets/images/action_case.png" alt="Clean and attacked action case study" />
+          <figcaption>
+            A representative action-failure case: the attacked trajectory remains visually
+            plausible early on, then drifts into task failure through accumulated action
+            error.
+          </figcaption>
+        </figure>
+
+        <div class="two-col case-figures">
+          <figure class="image-card future-case">
+            <img
+              src="assets/images/future_without_preservation.png"
+              alt="Predicted future without preservation"
+            />
+            <figcaption>Without preservation, the predicted future drifts more visibly.</figcaption>
+          </figure>
+          <figure class="image-card future-case">
+            <img
+              src="assets/images/future_with_preservation.png"
+              alt="Predicted future with preservation"
+            />
+            <figcaption>
+              With preservation, the imagined future remains closer while the action still
+              fails.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="citation" class="section narrow">
+        <p class="eyebrow">Citation</p>
+        <h2>BibTeX</h2>
+        <pre><code id="bibtex">@article{li2026badwam,
+  title   = {BadWAM: World-Action Desynchronization Attacks against World-Action Models},
+  author  = {Li, Qi and Wang, Xinchao},
+  journal = {Preprint},
+  year    = {2026}
+}</code></pre>
+        <div class="button-row compact">
+          <button class="button primary" type="button" data-copy-bibtex>Copy BibTeX</button>
+          <span class="copy-status" data-copy-status></span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        BadWAM · World-action desynchronization attacks against world-action models.
+      </p>
+      <p>
+        <a href="assets/paper/BadWAM.pdf">Paper</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/LiQiiiii/BadWAM">Code</a>
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
