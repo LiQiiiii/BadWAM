@@ -324,6 +324,23 @@ main {
   margin: -1.2% -4% -0.5%;
 }
 
+.gradient-text {
+  background: linear-gradient(
+    90deg,
+    #5B8CFF 0%,
+    #8A5CF6 40%,
+    #FF4D8D 75%,
+    #FF8A00 100%
+  );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  font-weight: 800;
+}
+
 .image-card figcaption {
   padding: 1rem 1.15rem 1.1rem;
   color: var(--muted);
