@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="BadWAM: World-Action Desynchronization Attacks against World-Action Models"
+      content="BadWAM: When World-Action Models Dream Right but Act Wrong"
     />
     <meta property="og:title" content="BadWAM" />
     <meta
       property="og:description"
-      content="World-action desynchronization attacks against world-action models."
+      content="World-action adversarial attacks against world-action models."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="assets/images/method_overview.png" />
-    <title>BadWAM: World-Action Desynchronization Attacks</title>
+    <title>BadWAM: World-Action Adversarial Attacks</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -37,12 +37,15 @@
       <section class="hero">
         <div class="hero-copy">
           <p class="eyebrow">Project page · Preprint</p>
-          <h1>BadWAM: World-Action Desynchronization Attacks against World-Action Models</h1>
+          <h1>
+            <span class="gradient-text">BadWAM</span>:
+            When World-Action Models Dream Right but Act Wrong
+          </h1>
           <p class="authors">
-            Qi Li<sup>1</sup> · Xinchao Wang<sup>1†</sup>
+            Qi Li<sup>1</sup> · Xingyi Yang<sup>2</sup> · Xinchao Wang<sup>1†</sup>
           </p>
           <p class="affiliation">
-            <sup>1</sup>National University of Singapore · <sup>†</sup>Corresponding author
+            <sup>1</sup>National University of Singapore · <sup>2</sup>The Hong Kong Polytechnic University · <sup>†</sup>Corresponding author
           </p>
           <p class="tagline">
             BadWAM shows that a robot can appear to imagine a plausible future while
@@ -66,7 +69,7 @@
             </div>
           </div>
           <p>
-            Action-only desynchronization reduces closed-loop LIBERO success on the
+            Action-only adversarial attack reduces closed-loop LIBERO success on the
             action-only WAM from <b>96.5%</b> to <b>43.1%</b>.
           </p>
         </aside>
@@ -89,15 +92,15 @@
           World-action models (WAMs) couple action generation with future world
           prediction, a design often viewed as a source of robustness, interpretability,
           and safety. BadWAM challenges this assumption. It models
-          <em>world-action desynchronization attacks</em>: small observation
+          <em>world-action adversarial attacks</em>: small observation
           perturbations that break the alignment between what a WAM imagines and what it
           executes.
         </p>
         <p>
           BadWAM instantiates two complementary objectives. The
-          <strong>action-only desynchronization attack</strong> prioritizes disruption by
+          <strong>action-only adversarial attack</strong> prioritizes disruption by
           driving the model toward task-failing actions. The
-          <strong>imagination-preserving desynchronization attack</strong> additionally
+          <strong>imagination-preserving adversarial attack</strong> additionally
           keeps the predicted future close to the clean imagination, producing a stealthier
           failure mode. Across WAM variants and closed-loop robot tasks, BadWAM
           substantially reduces task success and shows that plausible imagined futures
@@ -114,7 +117,7 @@
         <div class="method-grid">
           <article class="method-card red">
             <span class="step">01</span>
-            <h3>Action-only desynchronization</h3>
+            <h3>Action-only adversarial attack</h3>
             <p>
               The attacker maximizes the deviation between clean and attacked action
               chunks under a bounded visual perturbation. This captures high-strength
@@ -123,7 +126,7 @@
           </article>
           <article class="method-card orange">
             <span class="step">02</span>
-            <h3>Imagination-preserving desynchronization</h3>
+            <h3>Imagination-preserving adversarial attack</h3>
             <p>
               The attacker still shifts the action, but regularizes the predicted future
               to remain close to the clean imagination. This creates a stealthier
@@ -169,17 +172,17 @@
           <article class="result-card green">
             <span>Action-only WAM</span>
             <strong>96.5 → 43.1</strong>
-            <p>LIBERO success under action-only desynchronization.</p>
+            <p>LIBERO success under action-only attack.</p>
           </article>
           <article class="result-card purple">
             <span>Joint WAM</span>
-            <strong>96.7 → 61.5</strong>
-            <p>LIBERO success under action-only desynchronization.</p>
+            <strong>98.1 → 61.5</strong>
+            <p>LIBERO success under action-only attack.</p>
           </article>
           <article class="result-card orange">
             <span>IDM WAM</span>
-            <strong>100.0 → 66.1</strong>
-            <p>LIBERO success under action-only desynchronization.</p>
+            <strong>98.4 → 66.1</strong>
+            <p>LIBERO success under action-only attack.</p>
           </article>
           <article class="result-card red">
             <span>RoboTwin</span>
@@ -279,8 +282,8 @@
         <p class="eyebrow">Citation</p>
         <h2>BibTeX</h2>
         <pre><code id="bibtex">@article{li2026badwam,
-  title   = {BadWAM: World-Action Desynchronization Attacks against World-Action Models},
-  author  = {Li, Qi and Wang, Xinchao},
+  title   = {BadWAM: When World-Action Models Dream Right but Act Wrong},
+  author  = {Li, Qi and Xingyi, Yang and Wang, Xinchao},
   journal = {Preprint},
   year    = {2026}
 }</code></pre>
@@ -293,7 +296,7 @@
 
     <footer class="footer">
       <p>
-        BadWAM · World-action desynchronization attacks against world-action models.
+        BadWAM: When World-Action Models Dream Right but Act Wrong.
       </p>
       <p>
         <a href="assets/paper/BadWAM.pdf">Paper</a>
