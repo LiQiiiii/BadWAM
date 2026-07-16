@@ -351,8 +351,13 @@ main {
   padding-top: 0.65rem;
 }
 
-.hero-image {
-  border-radius: 34px;
+.hero-image img {
+  display: block;
+  margin-bottom: 0;
+}
+
+.hero-image figcaption {
+  padding-top: 0;
 }
 
 .method-grid,
@@ -493,6 +498,67 @@ code {
   color: var(--teal);
   font-weight: 760;
   text-decoration: none;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem;
+  margin-top: 1.4rem;
+}
+
+.video-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.video-card video {
+  display: block;
+  width: 100%;
+  background: #fff;
+}
+
+.video-card figcaption {
+  padding: 0.85rem 1.1rem 1rem;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.attack-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.65rem;
+  padding: 0.22rem 0.62rem;
+  border-radius: 999px;
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.01em;
+  vertical-align: 0.08em;
+}
+
+.badge-action {
+  background: var(--red);
+}
+
+.badge-imgpres {
+  background: var(--teal);
+}
+
+.video-grid.video-grid-single {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.8rem;
+}
+
+.video-grid.video-grid-single .video-card {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 @media (max-width: 920px) {
