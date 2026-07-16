@@ -48,7 +48,7 @@
             <sup>1</sup>National University of Singapore · <sup>2</sup>The Hong Kong Polytechnic University · <sup>†</sup>Corresponding author
           </p>
           <p class="tagline">
-            BadWAM shows that a robot can appear to imagine a plausible future while
+            BadWAM shows that a world action model can appear to imagine a plausible future while
             executing actions that have been adversarially shifted toward task failure.
           </p>
           <div class="button-row">
@@ -92,15 +92,14 @@
           World-action models (WAMs) couple action generation with future world
           prediction, a design often viewed as a source of robustness, interpretability,
           and safety. BadWAM challenges this assumption. It models
-          <em>world-action adversarial attacks</em>: small observation
-          perturbations that break the alignment between what a WAM imagines and what it
-          executes.
+          <strong>World-Action Drift Attacks</strong>: a new class of WAM-specific adversarial attacks that use small visual
+          perturbations to break the alignment between what a WAM imagines and what it executes.
         </p>
         <p>
           BadWAM instantiates two complementary objectives. The
-          <strong>action-only adversarial attack</strong> prioritizes disruption by
+          <strong><em>action-only adversarial attack</em></strong> prioritizes disruption by
           driving the model toward task-failing actions. The
-          <strong>imagination-preserving adversarial attack</strong> additionally
+          <strong><em>imagination-preserving adversarial attack</em></strong> additionally
           keeps the predicted future close to the clean imagination, producing a stealthier
           failure mode. Across WAM variants and closed-loop robot tasks, BadWAM
           substantially reduces task success and shows that plausible imagined futures
@@ -155,8 +154,8 @@
           <figure class="image-card">
             <img src="assets/images/action_structure.png" alt="Action component analysis" />
             <figcaption>
-              The induced shifts concentrate on meaningful action channels and horizon
-              segments rather than behaving like unstructured noise.
+              The attack induces structured shifts across action channels and horizons,
+              rather than unstructured noise.
             </figcaption>
           </figure>
         </div>
@@ -277,6 +276,41 @@
           </figure>
         </div>
       </section>
+
+<section class="section">
+  <div class="section-head">
+    <p class="eyebrow">Qualitative examples</p>
+    <h2>BadWAM failures remain visually plausible during execution.</h2>
+    <p>
+      We show cropped rollout videos comparing clean and attacked executions.
+    </p>
+  </div>
+
+  <div class="video-grid video-grid-single">
+    <figure class="video-card">
+      <video controls muted loop playsinline preload="metadata">
+        <source src="assets/videos/libero_spatial_pick_black_bowl_action_only_attack_ex01.mp4" type="video/mp4" />
+      </video>
+      <figcaption>
+        <span class="attack-badge badge-action">Action-only attack</span>
+        <b>Example 01.</b> LIBERO Spatial: pick the black bowl.
+        The left rollout is clean; the right rollout is attacked.
+      </figcaption>
+    </figure>
+
+    <figure class="video-card">
+      <video controls muted loop playsinline preload="metadata">
+        <source src="assets/videos/libero_10_put_cream_cheese_and_butter_imagination_preserving_attack_ex02.mp4" type="video/mp4" />
+      </video>
+      <figcaption>
+        <span class="attack-badge badge-imgpres">Imagination-preserving attack</span>
+        <b>Example 02.</b> LIBERO-10: put the cream cheese and butter.
+        The left rollout is clean; the right rollout is attacked.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
 
       <section id="citation" class="section narrow">
         <p class="eyebrow">Citation</p>
