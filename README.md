@@ -2,7 +2,7 @@
 
 **BadWAM: When World-Action Models Dream Right but Act Wrong**
 
-This repository contains the research code for BadWAM, a framework models World-Action Drift Attacks: a new class of
+This repository contains the research code for BadWAM, a framework models **World-Action Drift Attacks**: a new class of
 WAM-specific adversarial attacks that use small visual perturbations to break the alignment between what a WAM imagines and what it executes.
 BadWAM studies two attack objectives:
 
