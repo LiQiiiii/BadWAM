@@ -1,9 +1,9 @@
 # BadWAM
 
-**BadWAM: World-Action Desynchronization Attacks against World-Action Models**
+**BadWAM: When World-Action Models Dream Right but Act Wrong**
 
-This repository contains the research code for BadWAM, a framework for evaluating
-adversarial observation perturbations against World-Action Models (WAMs).
+This repository contains the research code for BadWAM, a framework models World-Action Drift Attacks: a new class of
+WAM-specific adversarial attacks that use small visual perturbations to break the alignment between what a WAM imagines and what it executes.
 BadWAM studies two attack objectives:
 
 - **Action-only Adversarial Attack**: perturb observations to maximize action shift.
