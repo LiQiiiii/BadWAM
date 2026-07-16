@@ -6,8 +6,8 @@ This repository contains the research code for BadWAM, a framework for evaluatin
 adversarial observation perturbations against World-Action Models (WAMs).
 BadWAM studies two attack objectives:
 
-- **Action-only desynchronization**: perturb observations to maximize action shift.
-- **Imagination-preserving desynchronization**: perturb observations to shift actions
+- **Action-only Adversarial Attack**: perturb observations to maximize action shift.
+- **Imagination-preserving Adversarial Attack**: perturb observations to shift actions
   while keeping the predicted future comparatively close to the clean prediction.
 
 The codebase is built on top of the FastWAM implementation and adds:
