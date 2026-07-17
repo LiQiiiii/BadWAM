@@ -1,6 +1,6 @@
-# BadWAM
-
-**BadWAM: When World-Action Models Dream Right but Act Wrong**
+<p align="center">
+  <b>BadWAM: When World-Action Models Dream Right but Act Wrong</b>
+</p>
 
 <p align="center">
   <a href="https://liqiiiii.github.io/BadWAM/">
