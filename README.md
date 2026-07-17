@@ -1,8 +1,6 @@
-<p align="center">
-  <span style="font-size: 4.45em;">
-    <b>BadWAM: When World-Action Models Dream Right but Act Wrong</b>
-  </span>
-</p>
+<h1 align="center">
+  BadWAM: When World-Action Models Dream Right but Act Wrong
+</h1>
 
 <p align="center">
   <a href="https://liqiiiii.github.io/BadWAM/">
