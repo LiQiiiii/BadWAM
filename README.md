@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <video src="docs/assets/videos/BadWAM_Example.mp4" width="900" controls muted loop playsinline></video>
+  <video src="https://github.com/user-attachments/assets/22299bb2-2b57-4d07-a12f-a6e3b5d1d458" width="900" controls muted loop playsinline></video>
 </p>
 
 This repository contains the research code for BadWAM, a framework models **World-Action Drift Attacks**: a new class of
