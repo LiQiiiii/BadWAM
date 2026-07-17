@@ -214,13 +214,13 @@ third_party/RoboTwin/task_config/
 This repository builds on FastWAM and uses LIBERO/RoboTwin evaluation environments.
 Please cite the corresponding upstream projects when using this code.
 
-## Citation
 
+## Citation
 ```bibtex
-@article{badwam2026,
-  title   = {BadWAM: World-Action Desynchronization Attacks against World-Action Models},
-  author  = {Anonymous Authors},
-  journal = {Manuscript under submission},
-  year    = {2026}
+@article{li2026badwam,
+  title={BadWAM: When World-Action Models Dream Right but Act Wrong},
+  author={Li, Qi and Yang, Xingyi and Wang, Xinchao},
+  journal={arXiv preprint arXiv:2607.15207},
+  year={2026}
 }
 ```
