@@ -14,6 +14,10 @@
   </a>
 </p>
 
+<p align="center">
+  <video src="docs/assets/videos/BadWAM_Example.mp4" width="900" controls muted loop playsinline></video>
+</p>
+
 This repository contains the research code for BadWAM, a framework models **World-Action Drift Attacks**: a new class of
 WAM-specific adversarial attacks that use small visual perturbations to break the alignment between what a WAM imagines and what it executes.
 BadWAM studies two attack objectives:
