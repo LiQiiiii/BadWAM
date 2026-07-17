@@ -2,6 +2,18 @@
 
 **BadWAM: When World-Action Models Dream Right but Act Wrong**
 
+<p align="center">
+  <a href="https://liqiiiii.github.io/BadWAM/">
+    <img alt="Homepage" src="https://img.shields.io/badge/Homepage-BadWAM-2A9D8F?style=for-the-badge&logo=githubpages&logoColor=white">
+  </a>
+  <a href="https://huggingface.co/collections/LIQIIIII/badwam">
+    <img alt="Hugging Face" src="https://img.shields.io/badge/Hugging%20Face-Models-F4A261?style=for-the-badge&logo=huggingface&logoColor=white">
+  </a>
+  <a href="https://arxiv.org/abs/2607.15207">
+    <img alt="arXiv" src="https://img.shields.io/badge/arXiv-2607.15207-D65A4A?style=for-the-badge&logo=arxiv&logoColor=white">
+  </a>
+</p>
+
 This repository contains the research code for BadWAM, a framework models **World-Action Drift Attacks**: a new class of
 WAM-specific adversarial attacks that use small visual perturbations to break the alignment between what a WAM imagines and what it executes.
 BadWAM studies two attack objectives:
