@@ -1,5 +1,5 @@
 <p align="center">
-  <span style="font-size: 1.45em;">
+  <span style="font-size: 2.45em;">
     <b>BadWAM: When World-Action Models Dream Right but Act Wrong</b>
   </span>
 </p>
