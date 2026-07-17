@@ -1,5 +1,5 @@
 <p align="center">
-  <b>BadWAM: When World-Action Models Dream Right but Act Wrong</b>
+  <b>**BadWAM: When World-Action Models Dream Right but Act Wrong**</b>
 </p>
 
 <p align="center">
