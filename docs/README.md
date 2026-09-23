@@ -2,12 +2,12 @@
 
 This folder is a self-contained static project page for:
 
-**BadWAM: World-Action Desynchronization Attacks against World-Action Models**
+**BadWAM: When World-Action Models Dream Right but Act Wrong**
 
 ## Local preview
 
 ```bash
-cd BadWAM_project_page
+cd BadWAM-main/docs
 python -m http.server 8000
 ```
 
@@ -36,4 +36,3 @@ your-repo/
 ```
 
 The page has no external JavaScript or CSS dependencies.
-

@@ -246,6 +246,7 @@ main {
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 760;
+  white-space: nowrap;
 }
 
 .mini-chart strong {
@@ -311,6 +312,7 @@ main {
 
 .image-card {
   overflow: hidden;
+  margin: 0;
 }
 
 .image-card img {
@@ -345,6 +347,17 @@ main {
   padding: 1rem 1.15rem 1.1rem;
   color: var(--muted);
   font-size: 0.94rem;
+}
+
+.future-example img {
+  aspect-ratio: 2.5 / 1;
+  object-fit: cover;
+  object-position: center 47%;
+}
+
+.future-example figcaption,
+.rollout-figure figcaption {
+  padding-top: 0.35rem;
 }
 
 .future-case figcaption {
@@ -423,8 +436,28 @@ main {
   margin-top: 1rem;
 }
 
+.method-figures {
+  grid-template-columns: 0.83fr 1fr;
+  align-items: start;
+}
+
+.results-figures {
+  grid-template-columns: 1fr 2.12fr;
+  align-items: start;
+}
+
+.fingerprint-figures {
+  grid-template-columns: 1.27fr 1fr;
+  align-items: start;
+}
+
+.budget-figures {
+  grid-template-columns: 7fr 10fr;
+  align-items: start;
+}
+
 .result-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .result-card span {
@@ -455,6 +488,14 @@ main {
 
 .result-card.red strong {
   color: var(--red);
+}
+
+.result-card.teal strong {
+  color: var(--teal);
+}
+
+.result-card.blue strong {
+  color: var(--blue);
 }
 
 .wide {
@@ -513,6 +554,7 @@ code {
   background: rgba(255, 255, 255, 0.84);
   box-shadow: var(--shadow);
   overflow: hidden;
+  margin: 0;
 }
 
 .video-card video {

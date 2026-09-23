@@ -10,11 +10,11 @@
     <meta property="og:title" content="BadWAM" />
     <meta
       property="og:description"
-      content="World-action adversarial attacks against world-action models."
+      content="Black-box world-action drift attacks against world-action models."
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="assets/images/method_overview.png" />
-    <title>BadWAM</title>
+    <title>BadWAM: When World-Action Models Dream Right but Act Wrong</title>
     <link rel="stylesheet" href="style.css" />
   </head>
 
@@ -29,6 +29,7 @@
         <a href="#method">Method</a>
         <a href="#results">Results</a>
         <a href="#analysis">Analysis</a>
+        <a href="#safety">Safety</a>
         <a href="#citation">Citation</a>
       </nav>
     </header>
@@ -50,12 +51,13 @@
             <sup>1</sup>National University of Singapore · <sup>2</sup>The Hong Kong Polytechnic University · <sup>†</sup>Corresponding author
           </p>
           <p class="tagline">
-            BadWAM shows that a world action model can appear to imagine a plausible future while
-            executing actions that have been adversarially shifted toward task failure.
+            BadWAM exposes a WAM-specific security gap: a bounded visual perturbation can
+            shift the executed action while leaving the model's imagined future comparatively plausible.
           </p>
           <div class="button-row">
             <a class="button primary" href="assets/paper/BadWAM.pdf">Paper PDF</a>
             <a class="button" href="https://github.com/LiQiiiii/BadWAM">Code</a>
+            <a class="button" href="https://huggingface.co/collections/LIQIIIII/badwam">Hugging Face</a>
             <a class="button ghost" href="#citation">BibTeX</a>
           </div>
         </div>
@@ -66,13 +68,13 @@
               <strong>96.5%</strong>
             </div>
             <div>
-              <span>Under attack</span>
+              <span>Attacked</span>
               <strong>43.1%</strong>
             </div>
           </div>
           <p>
-            Action-only adversarial attack reduces closed-loop LIBERO success on the
-            action-only WAM from <b>96.5%</b> to <b>43.1%</b>.
+            On the action-only WAM, the black-box action-only attack lowers closed-loop
+            LIBERO success from <b>96.5%</b> to <b>43.1%</b> under the same task protocol.
           </p>
         </aside>
       </section>
@@ -81,8 +83,8 @@
         <figure class="image-card hero-image">
           <img src="assets/images/method_overview.png" alt="BadWAM method overview" />
           <figcaption>
-            BadWAM injects small visual perturbations and searches online over a frozen
-            WAM to desynchronize the action pathway from the imagination pathway.
+            BadWAM injects a bounded visual perturbation into a frozen WAM and performs
+            query-based online search at each replanning step.
           </figcaption>
         </figure>
       </section>
@@ -91,28 +93,30 @@
         <p class="eyebrow">Abstract</p>
         <h2>Future prediction is not automatically a safety mechanism.</h2>
         <p>
-          World-action models (WAMs) couple action generation with future world
-          prediction, a design often viewed as a source of robustness, interpretability,
-          and safety. BadWAM challenges this assumption. It models
-          <strong>World-Action Drift Attacks</strong>: a new class of WAM-specific adversarial attacks that use small visual
-          perturbations to break the alignment between what a WAM imagines and what it executes.
+          World-action models (WAMs) couple action generation with future world prediction,
+          a design often viewed as a source of robustness, interpretability, and safety.
+          BadWAM challenges this assumption by introducing <strong>World-Action Drift Attacks</strong>:
+          WAM-specific adversarial attacks that use small visual perturbations to break the
+          alignment between what a WAM imagines and what it executes.
         </p>
         <p>
-          BadWAM instantiates two complementary objectives. The
-          <strong><em>action-only adversarial attack</em></strong> prioritizes disruption by
-          driving the model toward task-failing actions. The
-          <strong><em>imagination-preserving adversarial attack</em></strong> additionally
-          keeps the predicted future close to the clean imagination, producing a stealthier
-          failure mode. Across WAM variants and closed-loop robot tasks, BadWAM
-          substantially reduces task success and shows that plausible imagined futures
-          alone are not sufficient evidence of safe execution.
+          BadWAM studies two points on the attack-strength/stealthiness spectrum. The
+          <strong><em>action-only adversarial attack</em></strong> maximizes execution disruption,
+          while the <strong><em>imagination-preserving adversarial attack</em></strong> considers
+          not only disruption but also stealthiness.
         </p>
       </section>
 
       <section id="method" class="section">
         <div class="section-head">
           <p class="eyebrow">Method</p>
-          <h2>BadWAM attacks the synchronization between imagining and acting.</h2>
+          <h2>BadWAM attacks the alignment between imagining and acting.</h2>
+          <p>
+            The threat model is inference-time and black-box: the attacker can intercept the
+            visual input, query the WAM, and replace the input with a perturbation bounded by
+            an <span aria-label="ell infinity">ℓ∞</span> budget, but cannot change the instruction,
+            robot state, environment, model weights, or training data.
+          </p>
         </div>
 
         <div class="method-grid">
@@ -120,99 +124,119 @@
             <span class="step">01</span>
             <h3>Action-only adversarial attack</h3>
             <p>
-              The attacker maximizes the deviation between clean and attacked action
-              chunks under a bounded visual perturbation. This captures high-strength
-              action hijacking when disruption is the main goal.
+              Maximize the deviation between clean and attacked action chunks. It uses only
+              action outputs and represents the high-strength endpoint of the attack surface.
             </p>
           </article>
           <article class="method-card orange">
             <span class="step">02</span>
-            <h3>Imagination-preserving adversarial attack</h3>
+            <h3>Imagination-preserving attack</h3>
             <p>
-              The attacker still shifts the action, but regularizes the predicted future
-              to remain close to the clean imagination. This creates a stealthier
-              WAM-specific failure.
+              Shift the action while penalizing predicted-future drift. The result is a
+              stealthier failure for systems that expose futures to monitors or planners.
             </p>
           </article>
           <article class="method-card teal">
             <span class="step">03</span>
-            <h3>Closed-loop execution</h3>
+            <h3>Query-based closed loop</h3>
             <p>
-              Small replan-level shifts accumulate through robot execution, especially on
-              spatial and long-horizon tasks where timing and geometry leave little
-              tolerance for action drift.
+              Use zeroth-order finite-difference queries at every replan. Small structured
+              action shifts can accumulate into task failure over the execution horizon.
             </p>
           </article>
         </div>
 
-        <div class="two-col">
+        <div class="two-col method-figures">
           <figure class="image-card">
-            <img src="assets/images/desync_evidence_overleaf.png" alt="Action and future statistics" />
+            <img src="assets/images/desync_evidence_overleaf.png" alt="Action and future shift statistics" />
             <figcaption>
               Failed episodes tend to have larger action shifts, while predicted-future
-              shifts can overlap with successful episodes.
+              shifts overlap across successful and failed executions.
             </figcaption>
           </figure>
           <figure class="image-card">
-            <img src="assets/images/action_structure.png" alt="Action component analysis" />
+            <img src="assets/images/action_structure.png" alt="Structured action-channel shifts" />
             <figcaption>
-              The attack induces structured shifts across action channels and horizons,
-              rather than unstructured noise.
+              Action-only attacks produce structured shifts across action channels and
+              temporal horizon segments rather than uniform output noise.
             </figcaption>
           </figure>
         </div>
+
+        <figure class="image-card wide future-example">
+          <img src="assets/images/future_without_preservation.png" alt="Imagined future without preservation" />
+          <figcaption>
+            Qualitative IDM WAM example: both objectives induce action-space failure, while
+            future preservation keeps the adversarial imagination closer to the clean one.
+          </figcaption>
+        </figure>
       </section>
 
       <section id="results" class="section">
         <div class="section-head">
           <p class="eyebrow">Main results</p>
-          <h2>BadWAM reliably degrades closed-loop task success.</h2>
+          <h2>Small visual perturbations reliably degrade closed-loop success.</h2>
+          <p>
+            Values below are the main full-benchmark results from the updated paper. Each
+            LIBERO cell covers 40 tasks × 20 trials; each RoboTwin cell covers 50 tasks × 20 trials.
+            Arrows show clean → action-only attack, with imagination-preserving results listed after the slash where available.
+          </p>
         </div>
 
         <div class="result-grid">
           <article class="result-card green">
-            <span>Action-only WAM</span>
+            <span>LIBERO · Action-only WAM</span>
             <strong>96.5 → 43.1</strong>
-            <p>LIBERO success under action-only attack.</p>
+            <p>Clean → action-only attack.</p>
           </article>
           <article class="result-card purple">
-            <span>Joint WAM</span>
-            <strong>98.1 → 61.5</strong>
-            <p>LIBERO success under action-only attack.</p>
+            <span>LIBERO · Joint WAM</span>
+            <strong>98.1 → 61.5 / 63.0</strong>
+            <p>Clean → action-only / imagination-preserving.</p>
           </article>
           <article class="result-card orange">
-            <span>IDM WAM</span>
-            <strong>98.4 → 66.1</strong>
-            <p>LIBERO success under action-only attack.</p>
+            <span>LIBERO · IDM WAM</span>
+            <strong>98.4 → 66.1 / 67.0</strong>
+            <p>Clean → action-only / imagination-preserving.</p>
           </article>
           <article class="result-card red">
-            <span>RoboTwin</span>
+            <span>RoboTwin · Action-only WAM</span>
             <strong>92.1 → 84.4</strong>
-            <p>Action-only WAM success under the same attack protocol.</p>
+            <p>Clean → action-only attack.</p>
+          </article>
+          <article class="result-card teal">
+            <span>RoboTwin · Joint WAM</span>
+            <strong>93.3 → 86.0 / 87.0</strong>
+            <p>Clean → action-only / imagination-preserving.</p>
+          </article>
+          <article class="result-card blue">
+            <span>RoboTwin · IDM WAM</span>
+            <strong>92.9 → 75.4 / 76.5</strong>
+            <p>Clean → action-only / imagination-preserving.</p>
           </article>
         </div>
 
-        <div class="two-col">
+        <div class="two-col results-figures">
           <figure class="image-card">
-            <img src="assets/images/main_results.png" alt="Task-level failure profile" />
+            <img src="assets/images/main_results.png" alt="Task-level LIBERO failure profile" />
             <figcaption>
-              Task-level failure profile: attacked tasks move into lower success bins.
+              On LIBERO, 42.5% of action-only WAM tasks fall into the 0–25% success bin under attack.
             </figcaption>
           </figure>
           <figure class="image-card">
-            <img src="assets/images/suite_heatmap.png" alt="Per-suite success heatmap" />
+            <img src="assets/images/random_baseline.png" alt="Random and targeted attack comparison" />
             <figcaption>
-              Spatial and long-horizon suites are especially vulnerable to accumulated
-              action errors.
+              Targeted BadWAM attacks are stronger than random perturbations under the same
+              <span aria-label="ell infinity">ℓ∞</span> budget; a white-box reference is stronger still.
             </figcaption>
           </figure>
         </div>
 
         <figure class="image-card wide">
-          <img src="assets/images/success_by_suite.png" alt="Success over repeated trials by suite" />
+          <img src="assets/images/success_by_suite.png" alt="Pass at k across LIBERO suites" />
           <figcaption>
-            The success gap persists as more trials are averaged, showing that BadWAM is
-            not merely exploiting a few unlucky seeds.
+            Mean pass@<em>k</em> remains lower under attack as more trials are averaged,
+            showing that the degradation is not explained by a few unlucky seeds.
           </figcaption>
         </figure>
       </section>
@@ -220,105 +244,123 @@
       <section id="analysis" class="section">
         <div class="section-head">
           <p class="eyebrow">Analysis</p>
-          <h2>Attack strength and stealthiness form a measurable trade-off.</h2>
+          <h2>The failure is structured, accumulative, and transferable.</h2>
         </div>
 
-        <figure class="image-card wide">
-          <img
-            src="assets/images/matched_stealth.png"
-            alt="Matched-strength stealth dynamics"
-          />
+        <figure class="image-card wide rollout-figure">
+          <img src="assets/images/action_case.png" alt="Clean and attacked LIBERO rollout" />
           <figcaption>
-            Under matched perturbation and query budgets, the imagination-preserving
-            objective maintains comparable attack strength while reducing predicted-future
-            drift.
+            In a representative LIBERO-10 rollout, the attacked WAM initially behaves
+            plausibly, then gradually drifts, knocks over objects, fails to grasp the second
+            object, and eventually fails.
           </figcaption>
         </figure>
 
         <figure class="image-card wide">
-          <img src="assets/images/efficiency.png" alt="Efficiency and perturbation budget" />
+          <img src="assets/images/closed_loop_accumulation.png" alt="Action-shift accumulation over replanning" />
           <figcaption>
-            Query budget and perturbation budget shape the strength-runtime frontier.
-          </figcaption>
-        </figure>
-      </section>
-
-      <section id="qualitative" class="section">
-        <div class="section-head">
-          <p class="eyebrow">Qualitative cases</p>
-          <h2>BadWAM failures are structured and visually interpretable.</h2>
-        </div>
-
-        <figure class="image-card wide">
-          <img src="assets/images/action_case.png" alt="Clean and attacked action case study" />
-          <figcaption>
-            A representative action-failure case: the attacked trajectory remains visually
-            plausible early on, then drifts into task failure through accumulated action
-            error.
+            Per-replan action shifts persist and accumulate over execution; failed episodes
+            show substantially larger cumulative shifts than successful ones.
           </figcaption>
         </figure>
 
-        <div class="two-col case-figures">
-          <figure class="image-card future-case">
-            <img
-              src="assets/images/future_without_preservation.png"
-              alt="Predicted future without preservation"
-            />
-            <figcaption>Without preservation, the predicted future drifts more visibly.</figcaption>
-          </figure>
-          <figure class="image-card future-case">
-            <img
-              src="assets/images/future_with_preservation.png"
-              alt="Predicted future with preservation"
-            />
+        <div class="two-col fingerprint-figures">
+          <figure class="image-card">
+            <img src="assets/images/perturbation_fingerprint.png" alt="Spatial perturbation fingerprint" />
             <figcaption>
-              With preservation, the imagined future remains closer while the action still
-              fails.
+              Optimized perturbations are more edge-aligned and spatially concentrated than random noise.
+            </figcaption>
+          </figure>
+          <figure class="image-card">
+            <img src="assets/images/perturbation_heatmap.png" alt="Relative perturbation heatmaps" />
+            <figcaption>
+              BadWAM redistributes perturbation energy across selected regions of the composed camera views.
+            </figcaption>
+          </figure>
+        </div>
+
+        <figure class="image-card wide">
+          <img src="assets/images/matched_stealth.png" alt="Matched-strength imagination-preservation trade-off" />
+          <figcaption>
+            At comparable attack effectiveness, imagination preservation reduces average
+            predicted-future distance from 14.01 to 13.04 and is lower on 39 LIBERO tasks.
+          </figcaption>
+        </figure>
+
+        <div class="two-col budget-figures">
+          <figure class="image-card">
+            <img src="assets/images/future_weight.png" alt="Future-preserving weight ablation" />
+            <figcaption>
+              Increasing the future-preserving weight reduces future drift, but excessive
+              preservation weakens action manipulation.
+            </figcaption>
+          </figure>
+          <figure class="image-card">
+            <img src="assets/images/efficiency.png" alt="Perturbation and query budget sensitivity" />
+            <figcaption>
+              Larger perturbation and query budgets strengthen the attack at increased runtime cost;
+              the default uses ε = 0.06 and B = 16 perturbation queries.
             </figcaption>
           </figure>
         </div>
       </section>
 
-<section class="section">
-  <div class="section-head">
-    <p class="eyebrow">Qualitative examples</p>
-    <h2>BadWAM failures remain visually plausible during execution.</h2>
-    <p>
-      We show cropped rollout videos comparing clean and attacked executions.
-    </p>
-  </div>
+      <section id="safety" class="section narrow">
+        <p class="eyebrow">Safety implications</p>
+        <h2>Monitor synchronization, not imagination alone.</h2>
+        <p>
+          The updated results show why an imagined future should not be treated as a complete
+          safety certificate. An attacker can target the action-imagination interface: the
+          executed action chunk shifts enough to fail the task even when the predicted future
+          remains comparatively stable.
+        </p>
+        <p>
+          The vulnerability also transfers across WAM variants. Transferred attacks are only
+          2.0–4.7 percentage points weaker than attacks optimized directly on the target across
+          the five reported directions. The paper evaluates these task-failing attacks in
+          simulation rather than on physical robots, because their consequences cannot be
+          safely bounded in advance.
+        </p>
+      </section>
 
-  <div class="video-grid video-grid-single">
-    <figure class="video-card">
-      <video controls muted loop playsinline preload="metadata">
-        <source src="assets/videos/libero_spatial_pick_black_bowl_action_only_attack_ex01.mp4" type="video/mp4" />
-      </video>
-      <figcaption>
-        <span class="attack-badge badge-action">Action-only attack</span>
-        <b>Example 01.</b> LIBERO Spatial: pick the black bowl.
-        The left rollout is clean; the right rollout is attacked.
-      </figcaption>
-    </figure>
+      <section class="section">
+        <div class="section-head">
+          <p class="eyebrow">Qualitative examples</p>
+          <h2>Failures remain visually plausible during execution.</h2>
+          <p>Videos compare clean and attacked closed-loop rollouts on representative LIBERO tasks.</p>
+        </div>
 
-    <figure class="video-card">
-      <video controls muted loop playsinline preload="metadata">
-        <source src="assets/videos/libero_10_put_cream_cheese_and_butter_imagination_preserving_attack_ex02.mp4" type="video/mp4" />
-      </video>
-      <figcaption>
-        <span class="attack-badge badge-imgpres">Imagination-preserving attack</span>
-        <b>Example 02.</b> LIBERO-10: put the cream cheese and butter.
-        The left rollout is clean; the right rollout is attacked.
-      </figcaption>
-    </figure>
-  </div>
-</section>
+        <div class="video-grid video-grid-single">
+          <figure class="video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="assets/videos/libero_spatial_pick_black_bowl_action_only_attack_ex01.mp4" type="video/mp4" />
+            </video>
+            <figcaption>
+              <span class="attack-badge badge-action">Action-only attack</span>
+              <b>Example 01.</b> LIBERO Spatial: pick the black bowl. The left rollout is clean;
+              the right rollout is attacked.
+            </figcaption>
+          </figure>
+
+          <figure class="video-card">
+            <video controls muted loop playsinline preload="metadata">
+              <source src="assets/videos/libero_10_put_cream_cheese_and_butter_imagination_preserving_attack_ex02.mp4" type="video/mp4" />
+            </video>
+            <figcaption>
+              <span class="attack-badge badge-imgpres">Imagination-preserving attack</span>
+              <b>Example 02.</b> LIBERO-10: put the cream cheese and butter. The left rollout is
+              clean; the right rollout is attacked.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
 
       <section id="citation" class="section narrow">
         <p class="eyebrow">Citation</p>
         <h2>BibTeX</h2>
         <pre><code id="bibtex">@article{li2026badwam,
   title   = {BadWAM: When World-Action Models Dream Right but Act Wrong},
-  author = {Li, Qi and Yang, Xingyi and Wang, Xinchao},
+  author  = {Li, Qi and Yang, Xingyi and Wang, Xinchao},
   journal = {arXiv preprint arXiv:2607.15207},
   year    = {2026}
 }</code></pre>
@@ -330,9 +372,7 @@
     </main>
 
     <footer class="footer">
-      <p>
-        BadWAM: When World-Action Models Dream Right but Act Wrong.
-      </p>
+      <p>BadWAM: When World-Action Models Dream Right but Act Wrong.</p>
       <p>
         <a href="assets/paper/BadWAM.pdf">Paper</a>
         <span aria-hidden="true">·</span>
